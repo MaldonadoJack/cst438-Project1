@@ -20,9 +20,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             DOnorProjectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                    LandingPage(
+                        onLoginClick = { /* TODO: navigate to log in */ },
+                        onSignUpClick = { /* TODO: navigate to sign up */ }
                     )
                 }
             }
