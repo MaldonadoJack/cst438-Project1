@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DOnor Project</string>
+    <string name="name">App Name</string>
+    <string name="account">Account</string>
+    <string name="logout">logout</string>
+    <string name="food_logs">Food Logs</string>
+    <string name="recommended_meals">Recommended Meals</string>
+    <string name="search">Search</string>
 </resources>
