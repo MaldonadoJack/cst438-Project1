@@ -70,17 +70,17 @@ fun NutritionFactsScreen(
 
                 NutritionFactRow(
                     label = "Protein",
-                    value = "${nutritionFacts.proteinGrams} g"
+                    value = NutritionFactsFormatter.grams(nutritionFacts.proteinGrams)
                 )
 
                 NutritionFactRow(
                     label = "Carbohydrates",
-                    value = "${nutritionFacts.carbohydrateGrams} g"
+                    value = NutritionFactsFormatter.grams(nutritionFacts.carbohydrateGrams)
                 )
 
                 NutritionFactRow(
                     label = "Fat",
-                    value = "${nutritionFacts.fatGrams} g"
+                    value = NutritionFactsFormatter.grams(nutritionFacts.fatGrams)
                 )
             }
         }
