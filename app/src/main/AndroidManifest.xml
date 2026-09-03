@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".homePage"
+            android:name=".HomePage"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>
