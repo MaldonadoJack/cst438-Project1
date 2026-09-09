@@ -19,6 +19,8 @@ import androidx.room.RoomDatabase
 )
 abstract class AppDatabase : RoomDatabase() {
 
+    abstract fun userDao(): UserDao
+
     companion object {
         private const val DATABASE_NAME = "calorie_tracker.db"
 
