@@ -24,7 +24,7 @@ class ApiServiceTest {
     }
 
     @After
-    fun tearDOwn() {
+    fun tearDown() {
         server.shutdown()
     }
 
@@ -59,9 +59,9 @@ class ApiServiceTest {
 
         val food = response.foods.food.first()
 
-        assertEquals("123", food.food_id)
-        assertEquals("Apple", food.food_name)
-        assertEquals("Generic", food.food_type)
+        assertEquals("123", food.foodId)
+        assertEquals("Apple", food.foodName)
+        assertEquals("Generic", food.foodType)
     }
 
     @Test
