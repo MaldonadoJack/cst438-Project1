@@ -1,6 +1,5 @@
 package com.example.donorproject
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -57,12 +56,11 @@ class MainActivity : ComponentActivity() {
                                 onBackClick = { currentScreen = Screen.LANDING }
                             )
 
+                            // Signing up does not sign the new user in, so a successful
+                            // save stays in this activity and never starts HomePage.
                             Screen.SIGN_UP -> SignUpScreen(
                                 userDao = userDao,
-                                onSignUpSuccess = {
-                                    startActivity(Intent(this@MainActivity, HomePage::class.java))
-                                    finish()
-                                },
+                                onGoToLoginClick = { currentScreen = Screen.LOGIN },
                                 onBackClick = { currentScreen = Screen.LANDING }
                             )
                         }
