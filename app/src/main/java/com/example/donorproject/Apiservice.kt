@@ -81,7 +81,7 @@ interface ApiService {
         @Query("max_results") maxResults: Int = 20
     ): APIResponse
 
-    @GET("rest/foods/v1")
+    @GET("rest/food/v5")
     suspend fun getFoodDetails(
         @Header("Authorization") accessToken: String,
         @Query("food_id") foodId: String,
