@@ -27,7 +27,7 @@ class HomePage : AppCompatActivity() {
         val searchView = findViewById<SearchView>(R.id.searchView)
         val recyclerView = findViewById<RecyclerView>(R.id.searchResultRecyclerView)
 
-        // foodAdapter = FoodAdapter() //TODO Add functionality to click on food to show UI Model
+        foodAdapter = FoodAdapter(onFoodClick = { })
 
         recyclerView.layoutManager = LinearLayoutManager(this , LinearLayoutManager.HORIZONTAL , false)
         recyclerView.adapter = foodAdapter

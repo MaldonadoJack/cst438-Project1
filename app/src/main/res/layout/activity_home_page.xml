@@ -70,7 +70,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="RtlSymmetry" />
 
-    <SearchView
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="411dp"
         android:layout_height="50dp"
@@ -82,7 +82,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
-    </SearchView>
+    </androidx.appcompat.widget.SearchView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchResultRecyclerView"
