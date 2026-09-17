@@ -1,5 +1,6 @@
 package com.example.donorproject
 
+import com.google.gson.annotations.SerializedName
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
@@ -10,17 +11,28 @@ data class APIResponse(
 )
 
 // Class to hold a list of search results
-data class Foods (
+data class Foods(
     val food: List<Food>
 )
 
 // Class to hold data on a single search result
 data class Food(
+    @SerializedName("food_id")
     val foodId: String,
+
+    @SerializedName("food_name")
     val foodName: String,
+
+    @SerializedName("brand_name")
     val brandName: String?,
+
+    @SerializedName("food_type")
     val foodType: String,
+
+    @SerializedName("food_description")
     val foodDescription: String?,
+
+    @SerializedName("food_url")
     val foodUrl: String?
 )
 
@@ -29,9 +41,15 @@ data class FoodDetailsResponse(
 )
 
 data class FoodDetails(
-    val foodId: String ,
-    val foodName: String ,
-    val brandName: String? ,
+    @SerializedName("food_id")
+    val foodId: String,
+
+    @SerializedName("food_name")
+    val foodName: String,
+
+    @SerializedName("brand_name")
+    val brandName: String?,
+
     val servings: Servings
 )
 
@@ -40,25 +58,28 @@ data class Servings(
 )
 
 data class Serving(
-    val servingDescription: String? ,
-    val calories: String? ,
-    val carbohydrate: String? ,
-    val protein: String? ,
-    val fat: String? ,
-    val fiber: String? ,
-    val sugar: String? ,
+    @SerializedName("serving_description")
+    val servingDescription: String?,
+
+    val calories: String?,
+    val carbohydrate: String?,
+    val protein: String?,
+    val fat: String?,
+    val fiber: String?,
+    val sugar: String?,
     val sodium: String?
 )
 
-// Allows retrofit to communicate with the API
+// Allows Retrofit to communicate with the API
 interface ApiService {
+
     @GET("rest/foods/search/v1")
     suspend fun searchFoods(
-        @Header("Authorization") accessToken: String ,
-        @Query("search_expression") searchExpression: String ,
-        @Query("format") format: String = "json" ,
+        @Header("Authorization") accessToken: String,
+        @Query("search_expression") searchExpression: String,
+        @Query("format") format: String = "json",
         @Query("max_results") maxResults: Int = 20
-    ) : APIResponse
+    ): APIResponse
 
     @GET("rest/foods/v1")
     suspend fun getFoodDetails(

@@ -26,6 +26,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".NutritionFactsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".HomePage"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
