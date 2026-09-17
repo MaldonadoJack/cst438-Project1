@@ -21,15 +21,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.donorproject.data.local.UserDao
-import com.example.donorproject.data.local.UserEntity
 import kotlinx.coroutines.launch
 
+/** Shown after a successful save. Also used by tests to confirm the account was created. */
+const val SIGN_UP_SUCCESS_MESSAGE = "Account created. Please log in to continue."
+
+/**
+ * Creating an account does not sign the new user in, so this screen has no callback that
+ * could reach the logged-in part of the app. On success it confirms the save and offers
+ * [onGoToLoginClick]; the user chooses when to leave.
+ */
 @Composable
 fun SignUpScreen(
     userDao: UserDao,
-    onSignUpSuccess: (username: String) -> Unit,
+    onGoToLoginClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -41,6 +49,7 @@ fun SignUpScreen(
     var passwordError by rememberSaveable { mutableStateOf<String?>(null) }
     var confirmPasswordError by rememberSaveable { mutableStateOf<String?>(null) }
 
+    var successMessage by rememberSaveable { mutableStateOf<String?>(null) }
     var isSubmitting by rememberSaveable { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
@@ -64,6 +73,7 @@ fun SignUpScreen(
             onValueChange = {
                 username = it
                 usernameError = null
+                successMessage = null
             },
             modifier = Modifier.fillMaxWidth(),
             label = { Text("Username") },
@@ -79,6 +89,7 @@ fun SignUpScreen(
             onValueChange = {
                 password = it
                 passwordError = null
+                successMessage = null
             },
             modifier = Modifier.fillMaxWidth(),
             label = { Text("Password") },
@@ -95,6 +106,7 @@ fun SignUpScreen(
             onValueChange = {
                 confirmPassword = it
                 confirmPasswordError = null
+                successMessage = null
             },
             modifier = Modifier.fillMaxWidth(),
             label = { Text("Confirm Password") },
@@ -104,37 +116,71 @@ fun SignUpScreen(
             supportingText = { confirmPasswordError?.let { Text(it) } }
         )
 
+        successMessage?.let { message ->
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = message,
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center
+            )
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
             enabled = !isSubmitting,
             onClick = {
                 isSubmitting = true
+                successMessage = null
+
                 coroutineScope.launch {
-                    val result = SignUpFormValidator.validate(
+                    val outcome = AccountCreator.createAccount(
                         username = username,
                         password = password,
                         confirmPassword = confirmPassword,
                         userDao = userDao
                     )
 
-                    usernameError = result.usernameError
-                    passwordError = result.passwordError
-                    confirmPasswordError = result.confirmPasswordError
+                    when (outcome) {
+                        is SignUpOutcome.Created -> {
+                            usernameError = null
+                            passwordError = null
+                            confirmPasswordError = null
+                            successMessage = SIGN_UP_SUCCESS_MESSAGE
 
-                    if (result.isValid) {
-                        userDao.insert(
-                            UserEntity(username = username.trim(), passwordHash = password)
-                        )
-                        onSignUpSuccess(username.trim())
-                    } else {
-                        isSubmitting = false
+                            // Cleared so the confirmation cannot be resubmitted as a
+                            // duplicate, and so the password does not sit in state.
+                            username = ""
+                            password = ""
+                            confirmPassword = ""
+                        }
+
+                        is SignUpOutcome.Rejected -> {
+                            usernameError = outcome.errors.usernameError
+                            passwordError = outcome.errors.passwordError
+                            confirmPasswordError = outcome.errors.confirmPasswordError
+                        }
                     }
+
+                    isSubmitting = false
                 }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Sign Up")
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        OutlinedButton(
+            onClick = onGoToLoginClick,
+            enabled = !isSubmitting,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Go to Login")
         }
 
         Spacer(modifier = Modifier.height(12.dp))
