@@ -1,21 +1,22 @@
 package com.example.donorproject
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.ComponentActivity
 import android.widget.Toast
-import android.widget.SearchView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
-class HomePage : ComponentActivity() {
-    private var searchJob: Job? = null // stores coroutine for current search
-    private lateinit var foodAdapter : FoodAdapter
+class HomePage : AppCompatActivity() {
+
+    private var searchJob: Job? = null
+    private lateinit var foodAdapter: FoodAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,56 +25,64 @@ class HomePage : ComponentActivity() {
         setContentView(R.layout.activity_home_page)
 
         val searchView = findViewById<SearchView>(R.id.searchView)
-        val recyclerView = findViewById<RecyclerView>(R.id.searchResultRecyclerView)
+        val recyclerView =
+            findViewById<RecyclerView>(R.id.searchResultRecyclerView)
 
         foodAdapter = FoodAdapter { selectedFood ->
             loadNutritionFacts(selectedFood)
         }
 
-        recyclerView.layoutManager = LinearLayoutManager(this , LinearLayoutManager.HORIZONTAL , false)
+        recyclerView.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
         recyclerView.adapter = foodAdapter
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            // Submits users search
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    searchApi(it)
-                }
-                return true
-            }
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
 
-            // Checks when the user enters something into the search view (delay added so API is not swamped with responses)
-            override fun onQueryTextChange(newText: String?): Boolean {
-                searchJob?.cancel()
-
-                val query = newText?.trim().orEmpty()
-
-                if (query.length >= 2) {
-                    searchJob = lifecycleScope.launch {
-                        delay(500.milliseconds)
-                        searchApi(query)
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    query?.let {
+                        searchApi(it)
                     }
+                    return true
                 }
-                return true
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    searchJob?.cancel()
+
+                    val query = newText?.trim().orEmpty()
+
+                    if (query.length >= 2) {
+                        searchJob = lifecycleScope.launch {
+                            delay(500.milliseconds)
+                            searchApi(query)
+                        }
+                    }
+
+                    return true
+                }
             }
-        })
+        )
     }
 
-    // Implements the search function using the API
     private fun searchApi(query: String) {
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.searchFoods (
+                val response = RetrofitClient.api.searchFoods(
                     accessToken = FatSecretConfig.ACCESS_TOKEN,
                     searchExpression = query
                 )
 
                 val foods = response.foods.food
-
                 foodAdapter.updateFoods(foods)
-
             } catch (exception: Exception) {
-                Toast.makeText(this@HomePage, "Search failed: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@HomePage,
+                    "Search failed: ${exception.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
