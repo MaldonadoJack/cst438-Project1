@@ -7,6 +7,7 @@ enum class ValidationError(val message: String) {
     USERNAME_TAKEN("That username is already taken"),
     PASSWORD_BLANK("Password cannot be blank"),
     PASSWORD_MISMATCH("Passwords do not match"),
+    INVALID_CREDENTIALS("Incorrect username or password"),
 }
 
 sealed interface ValidationResult {

@@ -1,7 +1,7 @@
 package com.example.donorproject
 
 import android.os.Bundle
-import android.widget.Toast
+import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -46,18 +46,13 @@ class MainActivity : ComponentActivity() {
                             )
 
                             Screen.LOGIN -> LoginScreen(
-                                onLoginSubmit = { _, _ ->
-                                    Toast.makeText(
-                                        this@MainActivity,
-                                        "Authentication will be connected later",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                userDao = userDao,
+                                onLoginSuccess = {
+                                    startActivity(Intent(this@MainActivity, HomePage::class.java))
+                                    finish()
                                 },
                                 onBackClick = { currentScreen = Screen.LANDING }
                             )
-
-                            // Signing up does not sign the new user in, so a successful
-                            // save stays in this activity and never starts HomePage.
                             Screen.SIGN_UP -> SignUpScreen(
                                 userDao = userDao,
                                 onGoToLoginClick = { currentScreen = Screen.LOGIN },
