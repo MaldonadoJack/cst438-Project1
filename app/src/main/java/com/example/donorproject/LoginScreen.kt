@@ -15,6 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -22,11 +24,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.donorproject.data.local.UserDao
+import com.example.donorproject.data.local.UserEntity
 import com.example.donorproject.ui.theme.DOnorProjectTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
-    onLoginSubmit: (username: String, password: String) -> Unit,
+    userDao: UserDao,                              // <-- new
+    onLoginSuccess: (username: String) -> Unit,    // <-- replaces onLoginSubmit
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -34,6 +40,8 @@ fun LoginScreen(
     var password by rememberSaveable { mutableStateOf("") }
     var usernameError by rememberSaveable { mutableStateOf<String?>(null) }
     var passwordError by rememberSaveable { mutableStateOf<String?>(null) }
+    var isSubmitting by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = modifier
@@ -54,6 +62,7 @@ fun LoginScreen(
             onValueChange = {
                 username = it
                 usernameError = null
+                passwordError = null
             },
             modifier = Modifier.fillMaxWidth(),
             label = { Text("Username") },
@@ -85,17 +94,32 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
+            enabled = !isSubmitting,
             onClick = {
-                val result = LoginFormValidator.validate(
-                    username = username,
-                    password = password
-                )
+                isSubmitting = true
 
-                usernameError = result.usernameError
-                passwordError = result.passwordError
+                coroutineScope.launch {
+                    val outcome = AccountAuthenticator.logIn(
+                        username = username,
+                        password = password,
+                        userDao = userDao
+                    )
 
-                if (result.isValid) {
-                    onLoginSubmit(username.trim(), password)
+                    when (outcome) {
+                        is LoginOutcome.Success -> {
+                            usernameError = null
+                            passwordError = null
+                            password = ""
+                            onLoginSuccess(outcome.username)
+                        }
+
+                        is LoginOutcome.Rejected -> {
+                            usernameError = outcome.errors.usernameError
+                            passwordError = outcome.errors.passwordError
+                        }
+                    }
+
+                    isSubmitting = false
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -107,11 +131,17 @@ fun LoginScreen(
 
         OutlinedButton(
             onClick = onBackClick,
+            enabled = !isSubmitting,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Back")
         }
     }
+}
+private object PreviewUserDao : UserDao {
+    override suspend fun insert(user: UserEntity): Long = 0L
+
+    override suspend fun findByUsername(username: String): UserEntity? = null
 }
 
 @Preview(showBackground = true)
@@ -119,7 +149,8 @@ fun LoginScreen(
 private fun LoginScreenPreview() {
     DOnorProjectTheme {
         LoginScreen(
-            onLoginSubmit = { _, _ -> },
+            userDao = PreviewUserDao,
+            onLoginSuccess = {},
             onBackClick = {}
         )
     }
