@@ -31,6 +31,7 @@ class HomePageScreenTest {
 
     private val searchedQueries = mutableListOf<String>()
     private val clickedFoods = mutableListOf<Food>()
+    private var logoutClicks = 0
 
     @Test
     fun showsTheHeaderAndKeepsTheSearchFieldCollapsed() {
@@ -202,12 +203,24 @@ class HomePageScreenTest {
         assertTrue(isSearchFieldCollapsed())
     }
 
+    @Test
+    fun tappingLogoutInvokesTheLogoutCallback() {
+        showHomePage()
+
+        composeTestRule.onNodeWithText("LOGOUT").performClick()
+        composeTestRule.waitForIdle()
+
+        assertEquals(1, logoutClicks)
+    }
+
     private fun showHomePage(foods: List<Food> = emptyList()) {
+        logoutClicks = 0
         composeTestRule.setContent {
             HomePageScreen(
                 foods = foods,
                 onSearchRequested = { query -> searchedQueries += query },
-                onFoodClick = { food -> clickedFoods += food }
+                onFoodClick = { food -> clickedFoods += food },
+                onLogoutClick = { logoutClicks++ }
             )
         }
     }
