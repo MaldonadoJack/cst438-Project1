@@ -1,5 +1,7 @@
 package com.example.donorproject
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
@@ -16,6 +18,14 @@ class HomePage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val userId = userIdFromIntent(intent)
+        if (!isValidUserId(userId)) {
+            // No authenticated owner: do not show the signed-in Home flow.
+            startActivity(MainActivity.createIntentAfterLogout(this))
+            finish()
+            return
+        }
 
         enableEdgeToEdge()
         setContent {
@@ -97,5 +107,21 @@ class HomePage : AppCompatActivity() {
     private fun logOut() {
         startActivity(MainActivity.createIntentAfterLogout(this))
         finish()
+    }
+
+    companion object {
+        private const val EXTRA_USER_ID = "com.example.donorproject.USER_ID"
+        private const val INVALID_USER_ID = -1
+
+        fun createIntent(context: Context, userId: Int): Intent {
+            return Intent(context, HomePage::class.java).apply {
+                putExtra(EXTRA_USER_ID, userId)
+            }
+        }
+
+        internal fun userIdFromIntent(intent: Intent?): Int =
+            intent?.getIntExtra(EXTRA_USER_ID, INVALID_USER_ID) ?: INVALID_USER_ID
+
+        internal fun isValidUserId(userId: Int): Boolean = userId > 0
     }
 }

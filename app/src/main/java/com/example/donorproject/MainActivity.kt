@@ -54,8 +54,10 @@ class MainActivity : ComponentActivity() {
 
                             Screen.LOGIN -> LoginScreen(
                                 userDao = userDao,
-                                onLoginSuccess = {
-                                    startActivity(Intent(this@MainActivity, HomePage::class.java))
+                                onLoginSuccess = { userId ->
+                                    startActivity(
+                                        HomePage.createIntent(this@MainActivity, userId)
+                                    )
                                     finish()
                                 },
                                 onBackClick = { currentScreen = Screen.LANDING }

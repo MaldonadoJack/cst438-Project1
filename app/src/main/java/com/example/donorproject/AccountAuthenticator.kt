@@ -8,8 +8,8 @@ import kotlinx.coroutines.withContext
 
 sealed interface LoginOutcome {
 
-    /** [username] is the trimmed value that matched a stored account. */
-    data class Success(val username: String) : LoginOutcome
+    /** [userId] is the stored [UserEntity.id]; [username] is the trimmed match. */
+    data class Success(val userId: Int, val username: String) : LoginOutcome
 
     /** Carries the per-field messages the form should display. Nobody was signed in. */
     data class Rejected(val errors: LoginFormValidationResult) : LoginOutcome
@@ -30,14 +30,17 @@ object AccountAuthenticator {
         // Sign-up stores the trimmed username, so the lookup has to use the same value.
         val enteredUsername = username.trim()
         val user = userDao.findByUsername(enteredUsername)
+            ?: return LoginOutcome.Rejected(
+                LoginFormValidationResult(passwordError = ValidationError.INVALID_CREDENTIALS.message)
+            )
 
         // Key derivation is deliberately slow, so keep it off the main thread.
-        val passwordMatches = user != null && withContext(Dispatchers.Default) {
+        val passwordMatches = withContext(Dispatchers.Default) {
             PasswordHasher.verify(password, user.passwordHash)
         }
 
         return if (passwordMatches) {
-            LoginOutcome.Success(enteredUsername)
+            LoginOutcome.Success(userId = user.id, username = enteredUsername)
         } else {
             LoginOutcome.Rejected(
                 LoginFormValidationResult(passwordError = ValidationError.INVALID_CREDENTIALS.message)
