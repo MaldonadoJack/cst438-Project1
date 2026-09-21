@@ -141,12 +141,14 @@ private val AppNameAlignment = BiasAlignment(
  *
  * @param onSearchRequested called with the query to send to the search API.
  * @param onFoodClick called when a result is tapped.
+ * @param onLogoutClick called when the existing Logout control is tapped.
  */
 @Composable
 fun HomePageScreen(
     foods: List<Food>,
     onSearchRequested: (String) -> Unit,
     onFoodClick: (Food) -> Unit,
+    onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var query by rememberSaveable { mutableStateOf("") }
@@ -176,6 +178,7 @@ fun HomePageScreen(
         // Matches the SearchView close button: clear the query, then collapse.
         onSearchClose = { if (query.isEmpty()) isSearchExpanded = false else query = "" },
         onFoodClick = onFoodClick,
+        onLogoutClick = onLogoutClick,
         modifier = modifier
     )
 }
@@ -190,6 +193,7 @@ private fun HomePageContent(
     onSearchSubmit: () -> Unit,
     onSearchClose: () -> Unit,
     onFoodClick: (Food) -> Unit,
+    onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -206,9 +210,9 @@ private fun HomePageContent(
             style = AppNameStyle
         )
 
-        // Neither button had a click listener before the migration.
         FlatButton(
             text = stringResource(R.string.logout),
+            onClick = onLogoutClick,
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(start = ButtonMargin, top = ButtonMargin)
@@ -268,12 +272,25 @@ private fun HomePageContent(
 @Composable
 private fun FlatButton(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null
 ) {
     Box(
         modifier = modifier
             .defaultMinSize(minWidth = ButtonMinWidth, minHeight = ButtonMinHeight)
-            .background(SurfaceBackground),
+            .background(SurfaceBackground)
+            .then(
+                if (onClick == null) {
+                    Modifier
+                } else {
+                    Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        // The resting look stays a flat white rectangle; no ripple is added.
+                        indication = null,
+                        onClick = onClick
+                    )
+                }
+            ),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -415,7 +432,8 @@ private fun HomePageCollapsedSearchPreview() {
         onSearchExpand = {},
         onSearchSubmit = {},
         onSearchClose = {},
-        onFoodClick = {}
+        onFoodClick = {},
+        onLogoutClick = {}
     )
 }
 
@@ -430,6 +448,7 @@ private fun HomePageExpandedSearchPreview() {
         onSearchExpand = {},
         onSearchSubmit = {},
         onSearchClose = {},
-        onFoodClick = {}
+        onFoodClick = {},
+        onLogoutClick = {}
     )
 }

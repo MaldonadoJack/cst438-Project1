@@ -23,7 +23,8 @@ class HomePage : AppCompatActivity() {
                 HomePageScreen(
                     foods = foods.value,
                     onSearchRequested = ::searchApi,
-                    onFoodClick = ::loadNutritionFacts
+                    onFoodClick = ::loadNutritionFacts,
+                    onLogoutClick = ::logOut
                 )
             }
         }
@@ -86,5 +87,15 @@ class HomePage : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    /**
+     * Returns directly to the login screen and drops this signed-in task so Back
+     * cannot reopen HomePage. There is no persisted session token to delete;
+     * finishing this task is the current sign-out.
+     */
+    private fun logOut() {
+        startActivity(MainActivity.createIntentAfterLogout(this))
+        finish()
     }
 }
