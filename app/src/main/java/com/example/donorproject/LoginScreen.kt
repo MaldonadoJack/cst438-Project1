@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     userDao: UserDao,                              // <-- new
-    onLoginSuccess: (username: String) -> Unit,    // <-- replaces onLoginSubmit
+    onLoginSuccess: (userId: Int) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -110,7 +110,7 @@ fun LoginScreen(
                             usernameError = null
                             passwordError = null
                             password = ""
-                            onLoginSuccess(outcome.username)
+                            onLoginSuccess(outcome.userId)
                         }
 
                         is LoginOutcome.Rejected -> {

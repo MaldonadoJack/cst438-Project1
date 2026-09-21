@@ -30,7 +30,7 @@ class AccountAuthenticatorTest {
     @Test
     fun storedUserWithTheCorrectPasswordReturnsSuccess() = runBlocking {
         val userDao = FakeUserDao()
-        userDao.insert(
+        val storedId = userDao.insert(
             UserEntity(username = USERNAME, passwordHash = PasswordHasher.hash(PASSWORD))
         )
 
@@ -40,7 +40,10 @@ class AccountAuthenticatorTest {
             userDao = userDao
         )
 
-        assertEquals(LoginOutcome.Success(USERNAME), outcome)
+        assertEquals(
+            LoginOutcome.Success(userId = storedId.toInt(), username = USERNAME),
+            outcome
+        )
     }
 
     @Test
