@@ -36,6 +36,11 @@
         <activity
             android:name=".DailyFoodLogActivity"
             android:exported="false"/>
+
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

@@ -151,7 +151,8 @@ fun HomePageScreen(
     onFoodClick: (Food) -> Unit,
     onFoodLogsClick: () -> Unit,
     onLogoutClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAccountClick: () -> Unit = {}
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     var isSearchExpanded by rememberSaveable { mutableStateOf(false) }
@@ -182,6 +183,7 @@ fun HomePageScreen(
         onFoodClick = onFoodClick,
         onLogoutClick = onLogoutClick,
         onFoodLogsClick = onFoodLogsClick,
+        onAccountClick = onAccountClick,
         modifier = modifier
     )
 }
@@ -198,7 +200,8 @@ private fun HomePageContent(
     onFoodClick: (Food) -> Unit,
     onLogoutClick: () -> Unit,
     onFoodLogsClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAccountClick: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -224,6 +227,7 @@ private fun HomePageContent(
 
         FlatButton(
             text = stringResource(R.string.account),
+            onClick = onAccountClick,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(top = ButtonMargin, end = ButtonMargin)
