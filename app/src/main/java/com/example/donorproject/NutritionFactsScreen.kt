@@ -19,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.Button
 
 @Composable
 fun NutritionFactsScreen(
     nutritionFacts: NutritionFactsUiModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAddToFoodLog: (() -> Unit)? = null
 ) {
     Column(
         modifier = modifier
@@ -90,6 +92,15 @@ fun NutritionFactsScreen(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+
+        if (onAddToFoodLog != null) {
+            Button(
+                onClick = onAddToFoodLog,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Add to today's food log")
+            }
+        }
     }
 }
 

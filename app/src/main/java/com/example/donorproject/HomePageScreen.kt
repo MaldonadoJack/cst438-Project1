@@ -49,6 +49,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -148,6 +149,7 @@ fun HomePageScreen(
     foods: List<Food>,
     onSearchRequested: (String) -> Unit,
     onFoodClick: (Food) -> Unit,
+    onFoodLogsClick: () -> Unit,
     onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -179,6 +181,7 @@ fun HomePageScreen(
         onSearchClose = { if (query.isEmpty()) isSearchExpanded = false else query = "" },
         onFoodClick = onFoodClick,
         onLogoutClick = onLogoutClick,
+        onFoodLogsClick = onFoodLogsClick,
         modifier = modifier
     )
 }
@@ -194,6 +197,7 @@ private fun HomePageContent(
     onSearchClose: () -> Unit,
     onFoodClick: (Food) -> Unit,
     onLogoutClick: () -> Unit,
+    onFoodLogsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -223,6 +227,12 @@ private fun HomePageContent(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(top = ButtonMargin, end = ButtonMargin)
+        )
+
+        FlatButton(
+            text = stringResource(R.string.food_logs),
+            onClick = onFoodLogsClick,
+            modifier = Modifier.align(Alignment.TopCenter).padding(top = 56.dp)
         )
 
         Column(
@@ -433,7 +443,8 @@ private fun HomePageCollapsedSearchPreview() {
         onSearchSubmit = {},
         onSearchClose = {},
         onFoodClick = {},
-        onLogoutClick = {}
+        onLogoutClick = {},
+        onFoodLogsClick = {}
     )
 }
 
@@ -449,6 +460,7 @@ private fun HomePageExpandedSearchPreview() {
         onSearchSubmit = {},
         onSearchClose = {},
         onFoodClick = {},
-        onLogoutClick = {}
+        onLogoutClick = {},
+        onFoodLogsClick = {}
     )
 }

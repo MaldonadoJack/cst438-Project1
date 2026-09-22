@@ -32,6 +32,7 @@ class HomePageScreenTest {
     private val searchedQueries = mutableListOf<String>()
     private val clickedFoods = mutableListOf<Food>()
     private var logoutClicks = 0
+    private var foodLogClicks = 0;
 
     @Test
     fun showsTheHeaderAndKeepsTheSearchFieldCollapsed() {
@@ -215,12 +216,14 @@ class HomePageScreenTest {
 
     private fun showHomePage(foods: List<Food> = emptyList()) {
         logoutClicks = 0
+        foodLogClicks = 0
         composeTestRule.setContent {
             HomePageScreen(
                 foods = foods,
                 onSearchRequested = { query -> searchedQueries += query },
                 onFoodClick = { food -> clickedFoods += food },
-                onLogoutClick = { logoutClicks++ }
+                onLogoutClick = { logoutClicks++ },
+                onFoodLogsClick = { foodLogClicks++ }
             )
         }
     }

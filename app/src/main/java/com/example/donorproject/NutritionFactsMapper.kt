@@ -9,6 +9,7 @@ object NutritionFactsMapper {
         serving: Serving
     ): NutritionFactsUiModel {
         return NutritionFactsUiModel(
+            foodId = foodDetails.foodId,
             foodName = foodDetails.foodName,
             servingSize = serving.servingDescription ?: "Unknown serving",
             calories = serving.calories
