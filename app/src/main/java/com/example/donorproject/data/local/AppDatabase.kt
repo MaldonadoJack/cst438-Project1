@@ -23,6 +23,8 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
 
+    abstract fun accountDao(): AccountDao
+
     abstract fun foodLogDao(): FoodLogDao
 
     companion object {

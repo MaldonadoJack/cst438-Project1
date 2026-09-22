@@ -36,6 +36,7 @@ class HomePage : AppCompatActivity() {
                     onFoodClick = ::loadNutritionFacts,
                     onLogoutClick = ::logOut,
                     onFoodLogsClick = ::foodLog,
+                    onAccountClick = ::openAccount
                 )
             }
         }
@@ -125,6 +126,12 @@ class HomePage : AppCompatActivity() {
             intent?.getIntExtra(EXTRA_USER_ID, INVALID_USER_ID) ?: INVALID_USER_ID
 
         internal fun isValidUserId(userId: Int): Boolean = userId > 0
+    }
+
+    private fun openAccount() {
+        startActivity(
+            AccountActivity.createIntent(this, userIdFromIntent(intent))
+        )
     }
 
     private fun foodLog() {
