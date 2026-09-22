@@ -34,7 +34,8 @@ class HomePage : AppCompatActivity() {
                     foods = foods.value,
                     onSearchRequested = ::searchApi,
                     onFoodClick = ::loadNutritionFacts,
-                    onLogoutClick = ::logOut
+                    onLogoutClick = ::logOut,
+                    onFoodLogsClick = ::foodLog,
                 )
             }
         }
@@ -86,7 +87,8 @@ class HomePage : AppCompatActivity() {
                 startActivity(
                     NutritionFactsActivity.createIntent(
                         context = this@HomePage,
-                        nutritionFacts = nutritionFacts
+                        nutritionFacts = nutritionFacts,
+                        userId = userIdFromIntent(intent)
                     )
                 )
             } catch (exception: Exception) {
@@ -123,5 +125,11 @@ class HomePage : AppCompatActivity() {
             intent?.getIntExtra(EXTRA_USER_ID, INVALID_USER_ID) ?: INVALID_USER_ID
 
         internal fun isValidUserId(userId: Int): Boolean = userId > 0
+    }
+
+    private fun foodLog() {
+        startActivity(
+            DailyFoodLogActivity.createIntent(this, userIdFromIntent(intent))
+        )
     }
 }

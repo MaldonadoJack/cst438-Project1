@@ -1,6 +1,7 @@
 package com.example.donorproject
 
 data class NutritionFactsUiModel(
+    val foodId: String = "",
     val foodName: String,
     val servingSize: String,
     val calories: Int,
