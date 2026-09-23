@@ -1,9 +1,11 @@
 <resources>
-    <string name="app_name">DOnor Project</string>
-    <string name="name">App Name</string>
+    <string name="app_name">NutriFind</string>
+    <string name="name">@string/app_name</string>
     <string name="account">Account</string>
     <string name="logout">logout</string>
     <string name="food_logs">Food Logs</string>
     <string name="recommended_meals">Recommended Meals</string>
     <string name="search">Search</string>
+    <string name="back_to_home">Back to Home</string>
+    <string name="welcome_to_app">Welcome to %1$s</string>
 </resources>

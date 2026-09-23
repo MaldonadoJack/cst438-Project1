@@ -16,12 +16,15 @@ import com.example.donorproject.data.local.FoodLogEntity
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DailyFoodLogScreen(
     entries: List<FoodLogEntity>,
     onDeleteEntry: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackClick: (() -> Unit)? = null
 ) {
     val calories = entries.sumOf { it.calories }
     val protein = entries.sumOf { it.proteinGrams }
@@ -31,6 +34,12 @@ fun DailyFoodLogScreen(
     Column(
         modifier = modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        if (onBackClick != null) {
+            OutlinedButton(onClick = onBackClick) {
+                Text(stringResource(R.string.back_to_home))
+            }
+        }
+
         Text(
             text = "Today's Food Log",
             style = MaterialTheme.typography.headlineMedium,
@@ -92,5 +101,17 @@ fun DailyFoodLogScreen(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DailyFoodLogScreenPreview() {
+    MaterialTheme {
+        DailyFoodLogScreen(
+            entries = emptyList(),
+            onDeleteEntry = {},
+            onBackClick = {}
+        )
     }
 }

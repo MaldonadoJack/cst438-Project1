@@ -29,7 +29,10 @@ class DailyFoodLogActivity : ComponentActivity() {
             DOnorProjectTheme {
                 DailyFoodLogScreen(
                     entries = entries.value,
-                    onDeleteEntry = ::deleteEntry
+                    onDeleteEntry = ::deleteEntry,
+                    onBackClick = {
+                        finish()
+                    }
                 )
             }
         }

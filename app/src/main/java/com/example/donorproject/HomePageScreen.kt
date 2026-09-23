@@ -212,7 +212,7 @@ private fun HomePageContent(
             .imePadding()
     ) {
         Text(
-            text = stringResource(R.string.name),
+            text = stringResource(R.string.app_name),
             modifier = Modifier.align(AppNameAlignment),
             style = AppNameStyle
         )
