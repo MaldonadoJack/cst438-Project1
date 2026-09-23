@@ -20,12 +20,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun NutritionFactsScreen(
     nutritionFacts: NutritionFactsUiModel,
     modifier: Modifier = Modifier,
-    onAddToFoodLog: (() -> Unit)? = null
+    onAddToFoodLog: (() -> Unit)? = null,
+    onBackClick: (() -> Unit)? = null
 ) {
     Column(
         modifier = modifier
@@ -34,6 +37,12 @@ fun NutritionFactsScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        if (onBackClick != null) {
+            OutlinedButton(onClick = onBackClick) {
+                Text(stringResource(R.string.back_to_home))
+            }
+        }
+
         Text(
             text = "Nutrition Facts",
             style = MaterialTheme.typography.headlineLarge,
@@ -145,7 +154,9 @@ private fun NutritionFactsScreenPreview() {
                 proteinGrams = 31.0,
                 carbohydrateGrams = 0.0,
                 fatGrams = 3.6
-            )
+            ),
+            onBackClick = {},
+            onAddToFoodLog = {}
         )
     }
 }

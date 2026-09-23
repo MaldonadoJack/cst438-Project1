@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun LandingPage(
@@ -30,7 +31,10 @@ fun LandingPage(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Welcome",
+            text = stringResource(
+                R.string.welcome_to_app,
+                stringResource(R.string.app_name)
+            ),
             style = MaterialTheme.typography.headlineLarge
         )
 

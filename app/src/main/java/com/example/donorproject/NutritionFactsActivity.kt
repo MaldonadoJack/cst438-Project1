@@ -42,6 +42,9 @@ class NutritionFactsActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding),
                         onAddToFoodLog = {
                             addToFoodLog(nutritionFacts)
+                        },
+                        onBackClick = {
+                            finish()
                         }
                     )
                 }
