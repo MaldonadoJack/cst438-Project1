@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -69,6 +70,11 @@ private const val SearchHint = "Search..."
 // The SearchView supplied its own descriptions for these two controls.
 private const val SearchContentDescription = "Search"
 private const val CloseContentDescription = "Clear query"
+private val SoftBeige = Color(0xFFF5F1E8)
+private val SoftGreen = Color(0xFF7FAF8A)
+private val DarkGreen = Color(0xFF355E3B)
+private val LightGreen = Color(0xFFE3EFE5)
+private val SoftText = Color(0xFF4F514B)
 
 private val ScreenBackground = Color(0xFF036F63)
 private val OnScreenTextColor = Color(0xFFFFFFFF)
@@ -102,11 +108,13 @@ private val SearchQueryTextColor = Color(0xDE000000)
 private val SearchHintTextColor = Color(0x61000000)
 private val SearchIconTint = Color(0x8A000000)
 
+
 // Bare TextStyles keep the framework letter spacing and line height that the
 // replaced TextViews used, instead of the MaterialTheme typography defaults.
 private val AppNameStyle = TextStyle(
-    color = OnScreenTextColor,
-    fontSize = 22.sp,
+    color = DarkGreen,
+    fontSize = 26.sp,
+    fontWeight = FontWeight.Medium,
     textAlign = TextAlign.Center
 )
 
@@ -135,7 +143,6 @@ private val AppNameAlignment = BiasAlignment(
     horizontalBias = 0f,
     verticalBias = 2f * 0.022f - 1f
 )
-
 /**
  * Home page search screen. Replaces `activity_home_page.xml`, owning the query
  * text and the debounce that the activity's query text listener used to drive.
@@ -206,7 +213,7 @@ private fun HomePageContent(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(ScreenBackground)
+            .background(SoftBeige)
             // Stands in for fitsSystemWindows on the replaced root layout.
             .windowInsetsPadding(WindowInsets.systemBars)
             .imePadding()
@@ -292,7 +299,10 @@ private fun FlatButton(
     Box(
         modifier = modifier
             .defaultMinSize(minWidth = ButtonMinWidth, minHeight = ButtonMinHeight)
-            .background(SurfaceBackground)
+            .background(
+                color = LightGreen,
+                shape = RoundedCornerShape(14.dp)
+            )
             .then(
                 if (onClick == null) {
                     Modifier
@@ -339,8 +349,11 @@ private fun SearchField(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(SearchFieldHeight)
-            .background(SurfaceBackground),
+            .height(56.dp)
+            .background(
+                color = Color.White,
+                shape = RoundedCornerShape(18.dp)
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         SearchIcon(

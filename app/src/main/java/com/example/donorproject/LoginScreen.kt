@@ -28,10 +28,19 @@ import com.example.donorproject.data.local.UserDao
 import com.example.donorproject.data.local.UserEntity
 import com.example.donorproject.ui.theme.DOnorProjectTheme
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 
+private val SoftBeige = Color(0xFFF5F1E8)
+private val SoftGreen = Color(0xFF7FAF8A)
+private val DarkGreen = Color(0xFF355E3B)
+private val LightGreen = Color(0xFFE3EFE5)
+private val SoftText = Color(0xFF4F514B)
 @Composable
 fun LoginScreen(
-    userDao: UserDao,                              // <-- new
+    userDao: UserDao,
     onLoginSuccess: (userId: Int) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -43,16 +52,30 @@ fun LoginScreen(
     var isSubmitting by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
+
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .background(SoftBeige)
+            .padding(horizontal = 28.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-    ) {
+    ){
         Text(
-            text = "Log In",
-            style = MaterialTheme.typography.headlineLarge
+            text = "Welcome Back",
+            style = MaterialTheme.typography.headlineMedium.copy(
+                color = DarkGreen,
+                fontWeight = FontWeight.Medium
+            )
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Log in to continue",
+            style = MaterialTheme.typography.bodyLarge.copy(
+                color = SoftText
+            )
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -70,7 +93,8 @@ fun LoginScreen(
             isError = usernameError != null,
             supportingText = {
                 usernameError?.let { Text(it) }
-            }
+            },
+            shape = RoundedCornerShape(18.dp)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -88,7 +112,8 @@ fun LoginScreen(
             isError = passwordError != null,
             supportingText = {
                 passwordError?.let { Text(it) }
-            }
+            },
+            shape = RoundedCornerShape(18.dp)
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -122,9 +147,19 @@ fun LoginScreen(
                     isSubmitting = false
                 }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(18.dp),
+            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                containerColor = SoftGreen,
+                contentColor = Color.White
+            )
         ) {
-            Text("Log In")
+            Text(
+                text = "Log In",
+                fontWeight = FontWeight.Medium
+            )
         }
 
         Spacer(modifier = Modifier.height(12.dp))

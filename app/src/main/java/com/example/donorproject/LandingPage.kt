@@ -17,7 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
-
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+private val SoftBeige = Color(0xFFF5F1E8)
+private val SoftGreen = Color(0xFF7FAF8A)
+private val DarkGreen = Color(0xFF355E3B)
+private val SoftText = Color(0xFF4F514B)
 @Composable
 fun LandingPage(
     onSignUpClick: () -> Unit,
@@ -26,25 +34,44 @@ fun LandingPage(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .background(SoftBeige)
+            .padding(horizontal = 28.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = stringResource(
-                R.string.welcome_to_app,
-                stringResource(R.string.app_name)
-            ),
-            style = MaterialTheme.typography.headlineLarge
+            text = "Welcome",
+            style = MaterialTheme.typography.headlineLarge.copy(
+                color = DarkGreen,
+                fontWeight = FontWeight.Medium
+            )
         )
 
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Create a account or log in.",
+            style = MaterialTheme.typography.bodyLarge.copy(
+                color = SoftText
+            )
+        )
         Spacer(modifier = Modifier.height(48.dp))
 
         Button(
             onClick = onSignUpClick,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(18.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = SoftGreen,
+                contentColor = Color.White
+            )
         ) {
-            Text("Sign Up")
+            Text(
+                text = "Sign Up",
+                fontWeight = FontWeight.Medium
+            )
         }
 
         Spacer(modifier = Modifier.height(12.dp))

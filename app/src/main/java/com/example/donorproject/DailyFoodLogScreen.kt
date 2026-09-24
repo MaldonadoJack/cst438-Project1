@@ -18,6 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun DailyFoodLogScreen(
@@ -32,7 +34,11 @@ fun DailyFoodLogScreen(
     val fat = entries.sumOf { it.fatGrams }
 
     Column(
-        modifier = modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color(0xFFF5F1E8))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         if (onBackClick != null) {
             OutlinedButton(onClick = onBackClick) {
@@ -42,12 +48,14 @@ fun DailyFoodLogScreen(
 
         Text(
             text = "Today's Food Log",
+            color = Color(0xFF355E3B),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
 
         Card(
             modifier = Modifier.fillMaxWidth()
+
         ) {
             Column(
                 modifier = Modifier.padding(16.dp)
