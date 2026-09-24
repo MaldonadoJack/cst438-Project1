@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -24,6 +25,11 @@ import androidx.compose.ui.unit.dp
 import com.example.donorproject.data.local.AccountDao
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 
 @Composable
 fun AccountScreen(
@@ -71,12 +77,14 @@ fun AccountScreen(
 
     Column(
         modifier = modifier
+            .background(Color(0xFFF5F1E8))
             .verticalScroll(rememberScrollState())
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = "Update Account",
+            color = Color(0xFF355E3B),
             style = MaterialTheme.typography.headlineLarge
         )
 
@@ -95,6 +103,11 @@ fun AccountScreen(
             enabled = canEdit,
             singleLine = true,
             isError = errors.usernameError != null,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF7FAF8A),
+                unfocusedBorderColor = Color(0xFF7FAF8A),
+                focusedLabelColor = Color(0xFF355E3B),
+                unfocusedLabelColor = Color(0xFF4F514B)),
             supportingText = {
                 errors.usernameError?.let { Text(it) }
             },
@@ -118,6 +131,12 @@ fun AccountScreen(
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             isError = errors.passwordError != null,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF7FAF8A),
+                unfocusedBorderColor = Color(0xFF7FAF8A),
+                focusedLabelColor = Color(0xFF355E3B),
+                unfocusedLabelColor = Color(0xFF4F514B)
+            ),
             supportingText = {
                 errors.passwordError?.let { Text(it) }
             },
@@ -136,6 +155,12 @@ fun AccountScreen(
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             isError = errors.confirmPasswordError != null,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF7FAF8A),
+                unfocusedBorderColor = Color(0xFF7FAF8A),
+                focusedLabelColor = Color(0xFF355E3B),
+                unfocusedLabelColor = Color(0xFF4F514B)
+            ),
             supportingText = {
                 errors.confirmPasswordError?.let { Text(it) }
             },
@@ -156,6 +181,10 @@ fun AccountScreen(
         Button(
             enabled = canEdit,
             modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF7FAF8A),
+                contentColor = Color.White
+            ),
             onClick = {
                 isSubmitting = true
                 message = null

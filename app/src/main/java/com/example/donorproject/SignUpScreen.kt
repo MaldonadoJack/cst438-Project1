@@ -25,15 +25,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.donorproject.data.local.UserDao
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.shape.RoundedCornerShape
 
-/** Shown after a successful save. Also used by tests to confirm the account was created. */
 const val SIGN_UP_SUCCESS_MESSAGE = "Account created. Please log in to continue."
+private val SoftBeige = Color(0xFFF5F1E8)
+private val DarkGreen = Color(0xFF355E3B)
 
-/**
- * Creating an account does not sign the new user in, so this screen has no callback that
- * could reach the logged-in part of the app. On success it confirms the save and offers
- * [onGoToLoginClick]; the user chooses when to leave.
- */
 @Composable
 fun SignUpScreen(
     userDao: UserDao,
@@ -57,15 +60,18 @@ fun SignUpScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(SoftBeige)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = "Sign Up",
-            style = MaterialTheme.typography.headlineLarge
+            style = MaterialTheme.typography.headlineMedium.copy(
+                color = DarkGreen,
+                fontWeight = FontWeight.Medium
+            )
         )
-
         Spacer(modifier = Modifier.height(32.dp))
 
         OutlinedTextField(
@@ -79,7 +85,8 @@ fun SignUpScreen(
             label = { Text("Username") },
             singleLine = true,
             isError = usernameError != null,
-            supportingText = { usernameError?.let { Text(it) } }
+            supportingText = { usernameError?.let { Text(it) } },
+            shape = RoundedCornerShape(18.dp)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -96,7 +103,8 @@ fun SignUpScreen(
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             isError = passwordError != null,
-            supportingText = { passwordError?.let { Text(it) } }
+            supportingText = { passwordError?.let { Text(it) } },
+            shape = RoundedCornerShape(18.dp)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -113,7 +121,8 @@ fun SignUpScreen(
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             isError = confirmPasswordError != null,
-            supportingText = { confirmPasswordError?.let { Text(it) } }
+            supportingText = { confirmPasswordError?.let { Text(it) } },
+            shape = RoundedCornerShape(18.dp)
         )
 
         successMessage?.let { message ->
@@ -168,7 +177,14 @@ fun SignUpScreen(
                     isSubmitting = false
                 }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(18.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF7FAF8A),
+                contentColor = Color.White
+            )
         ) {
             Text("Sign Up")
         }
