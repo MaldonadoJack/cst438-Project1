@@ -13,6 +13,6 @@
 ## What went wrong
 
 1. We had a major problem with the API we chose for the project. The API required an IP address as a kind of whitelist for who is allowed to access it, which caused a lot of problems with testing and running the app.
-2. A second problem was [Gradle issue]
+2. A second problem was the Gradle issue we had at the very beginning of the project. Gradle wasn't building on any of our systems so we had to edit the Gradle file along with some other config files to allow Gradle to build.
 
 ## Advice to our next teams
