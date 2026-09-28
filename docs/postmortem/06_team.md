@@ -1,9 +1,10 @@
 # Project 01 Post Mortem - \[Group 6 / cst438-Project1]
 
 ## Context
+We set out to build an app that tracks users' daily nutrient consumption and provides both visual and historical displays of their nutritional data.
+By the time we shipped our app, we had achieved many of our original goals. However, we ultimately focused on a daily tracking format and removed the historical aspects.
 
 ## By the numbers
-
 * Issues opened: 27 ([issues](https://github.com/MaldonadoJack/cst438-Project1/issues)) | closed: 25
 * Pull requests opened: 27 ([pull requests](https://github.com/MaldonadoJack/cst438-Project1/pulls)) | merged: 27
 * Planned at kickoff: 15 stories | done: 13
